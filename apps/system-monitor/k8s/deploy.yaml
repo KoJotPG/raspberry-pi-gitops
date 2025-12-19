@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: berry-monitor
+  labels:
+    app: berry-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: berry-monitor
+  template:
+    metadata:
+      labels:
+        app: berry-monitor
+    spec:
+      containers:
+      - name: monitor
+        image: ghcr.io/kojotpg/k3s-monitor:latest
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: thermal
+          mountPath: /sys/class/thermal
+          readOnly: true
+      volumes:
+      - name: thermal
+        hostPath:
+          path: /sys/class/thermal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: berry-monitor-service
+spec:
+  selector:
+    app: berry-monitor
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: berry-monitor-ingress
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/monitor`)
+      kind: Rule
+      services:
+        - name: berry-monitor-service
+          port: 80
+      middlewares:
+        - name: monitor-stripprefix
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: monitor-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /monitor

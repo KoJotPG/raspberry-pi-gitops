@@ -1,6 +1,5 @@
 from flask import Flask, render_template_string
 import psutil
-import socket
 
 app = Flask(__name__)
 
@@ -8,7 +7,7 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Berry Monitor</title>
+    <title>System Monitor</title>
     <meta http-equiv="refresh" content="5">
     <style>
         body { font-family: sans-serif; background: #2c3e50; color: white; text-align: center; }
@@ -18,15 +17,14 @@ HTML_TEMPLATE = """
     </style>
 </head>
 <body>
-    <h1>System Monitor: {{ hostname }}</h1>
-    <div class="card"><h3>CPU</h3><div class="value">{{ cpu }}%</div></div>
-    <div class="card"><h3>RAM</h3><div class="value">{{ ram }}%</div></div>
-    <div class="card"><h3>TEMP</h3><div class="value">{{ temp }}°C</div></div>
-    <p>Dane odświeżają się co 5 sekund.</p>
+    <h1>System Monitor</h1>
+    <div class="card"><h3>CPU Usage</h3><div class="value">{{ cpu }}%</div></div>
+    <div class="card"><h3>RAM Usage</h3><div class="value">{{ ram }}%</div></div>
+    <div class="card"><h3>Temperature</h3><div class="value">{{ temp }}°C</div></div>
+    <p>Data refreshes every 5 seconds.</p>
 </body>
 </html>
 """
-
 
 @app.route('/')
 def index():
@@ -38,10 +36,7 @@ def index():
     except:
         temp = "N/A"
 
-    return render_template_string(HTML_TEMPLATE,
-                                  cpu=cpu, ram=ram, temp=temp,
-                                  hostname=socket.gethostname())
-
+    return render_template_string(HTML_TEMPLATE, cpu=cpu, ram=ram, temp=temp)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

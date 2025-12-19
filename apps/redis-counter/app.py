@@ -1,6 +1,5 @@
 from flask import Flask
 from redis import Redis
-import os
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379, decode_responses=True)
@@ -11,9 +10,9 @@ def hello():
     counter = redis.get('hits')
     return f"""
     <div style='text-align:center; padding-top:50px; font-family:sans-serif;'>
-        <h1>Licznik odwiedzin Redis</h1>
-        <p style='font-size: 2em;'>Ta strona została odwiedzona <b>{counter}</b> razy.</p>
-        <p><small>Dane zapisane trwale w bazie Redis na Raspberry Pi</small></p>
+        <h1>Redis Visit Counter</h1>
+        <p style='font-size: 2em;'>This page has been visited <b>{counter}</b> times.</p>
+        <p><small>Data stored persistently in Redis on Raspberry Pi</small></p>
     </div>
     """
 

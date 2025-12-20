@@ -53,6 +53,14 @@ def index():
     </div>
     """, w=weather_info)
 
+@app.route('/api')
+def api():
+    data = get_weather()
+    if data:
+        current = data.get('current', {})
+        return jsonify(temp=current.get('temperature_2m'), hum=current.get('relative_humidity_2m', 0))
+    return jsonify(error="Data error"), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

@@ -16,5 +16,10 @@ def hello():
     </div>
     """
 
+@app.route('/api')
+def api():
+    counter = redis.get('hits') or 0
+    return jsonify(count=counter)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

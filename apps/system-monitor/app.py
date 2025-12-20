@@ -38,5 +38,16 @@ def index():
 
     return render_template_string(HTML_TEMPLATE, cpu=cpu, ram=ram, temp=temp)
 
+@app.route('/api')
+def api():
+    cpu = psutil.cpu_percent()
+    ram = psutil.virtual_memory().percent
+    try:
+        temp = open("/sys/class/thermal/thermal_zone0/temp").read()
+        temp = round(int(temp) / 1000, 1)
+    except:
+        temp = "N/A"
+    return jsonify(cpu=cpu, ram=ram, temp=temp)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

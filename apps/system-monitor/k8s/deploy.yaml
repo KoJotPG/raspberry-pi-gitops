@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: berry-monitor
+  name: system-monitor
   labels:
-    app: berry-monitor
+    app: system-monitor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: berry-monitor
+      app: system-monitor
   template:
     metadata:
       labels:
-        app: berry-monitor
+        app: system-monitor
     spec:
       containers:
       - name: monitor
-        image: ghcr.io/kojotpg/k3s-monitor:latest
+        image: ghcr.io/kojotpg/system-monitor:latest
         ports:
         - containerPort: 5000
         volumeMounts:
@@ -34,7 +34,7 @@ metadata:
   name: berry-monitor-service
 spec:
   selector:
-    app: berry-monitor
+    app: system-monitor
   ports:
     - protocol: TCP
       port: 80

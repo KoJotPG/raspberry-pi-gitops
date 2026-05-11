@@ -11,7 +11,7 @@ def hello():
     return f"""
     <div style='text-align:center; padding-top:50px; font-family:sans-serif;'>
         <h1>Redis Visit Counter</h1>
-        <p style='font-size: 2em;'>This page has been visited <b>{counter}</b> times!.</p>
+        <p style='font-size: 2em;'>This page has been visited <b>{counter}</b> times.</p>
         <p><small>Data stored persistently in Redis on Raspberry Pi</small></p>
     </div>
     """

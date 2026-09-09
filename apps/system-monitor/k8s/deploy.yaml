@@ -36,9 +36,9 @@ spec:
   selector:
     app: system-monitor
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -46,15 +46,15 @@ metadata:
   name: system-monitor-ingress
 spec:
   entryPoints:
-    - web
+  - web
   routes:
-    - match: PathPrefix(`/monitor`)
-      kind: Rule
-      services:
-        - name: system-monitor-service
-          port: 80
-      middlewares:
-        - name: monitor-stripprefix
+  - match: PathPrefix(`/monitor`)
+    kind: Rule
+    services:
+    - name: system-monitor-service
+        port: 80
+    middlewares:
+    - name: monitor-stripprefix
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
@@ -63,4 +63,4 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /monitor
+    - /monitor

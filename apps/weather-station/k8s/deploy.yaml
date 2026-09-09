@@ -36,9 +36,9 @@ spec:
   selector:
     app: weather-station
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute

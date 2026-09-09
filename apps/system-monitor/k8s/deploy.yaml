@@ -52,7 +52,7 @@ spec:
     kind: Rule
     services:
     - name: system-monitor-service
-        port: 80
+      port: 80
     middlewares:
     - name: monitor-stripprefix
 ---

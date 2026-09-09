@@ -47,7 +47,7 @@ metadata:
 spec:
   entryPoints: [web]
   routes:
-  - match: PathPrefix(`/weather`)
+  - match: Host(`berry`) && PathPrefix(`/weather`)
     kind: Rule
     services:
     - name: weather-station-service

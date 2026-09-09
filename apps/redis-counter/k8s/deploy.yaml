@@ -68,7 +68,7 @@ metadata:
 spec:
   entryPoints: [web]
   routes:
-  - match: PathPrefix(`/counter`)
+  - match: Host(`berry`) && PathPrefix(`/counter`)
     kind: Rule
     services:
     - name: redis-counter-service

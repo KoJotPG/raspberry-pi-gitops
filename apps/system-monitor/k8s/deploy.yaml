@@ -48,7 +48,7 @@ spec:
   entryPoints:
   - web
   routes:
-  - match: PathPrefix(`/monitor`)
+  - match: Host(`berry`) && PathPrefix(`/monitor`)
     kind: Rule
     services:
     - name: system-monitor-service

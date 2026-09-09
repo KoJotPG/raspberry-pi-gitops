@@ -1,13 +1,7 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: gitea
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: gitea-pvc
-  namespace: gitea
 spec:
   accessModes:
     - ReadWriteOnce
@@ -19,7 +13,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gitea
-  namespace: gitea
 spec:
   replicas: 1
   selector:
@@ -50,7 +43,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gitea-service
-  namespace: gitea
 spec:
   type: ClusterIP
   ports:
@@ -63,19 +55,26 @@ spec:
   selector:
     app: gitea
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
   name: gitea-ingress
-  namespace: gitea
 spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: gitea-service
-                port:
-                  number: 3000
+  entryPoints: [web]
+  routes:
+  - match: Host(`berry`) && PathPrefix(`/gitea`)
+    kind: Rule
+    services:
+    - name: gitea-service
+      port: 3000
+    middlewares:
+    - name: gitea-stripprefix
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: gitea-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+    - /gitea

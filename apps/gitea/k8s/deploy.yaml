@@ -26,6 +26,11 @@ spec:
       containers:
         - name: gitea
           image: gitea/gitea:1.22-rootless
+          env:
+            - name: GITEA__server__ROOT_URL
+              value: "http://berry/gitea/"
+            - name: GITEA__server__LFS_ROOT_URL
+              value: "http://berry/gitea/"
           ports:
             - containerPort: 3000
               name: http

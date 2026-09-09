@@ -1,0 +1,20 @@
+name: Lint Kubernetes Manifests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  kube-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeval / Validate YAML
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint
+          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" apps/

@@ -1,0 +1,107 @@
+# 1. Gitea
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/KoJotPG/raspberry-pi-gitops.git'
+    targetRevision: HEAD
+    path: apps/gitea/k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: gitea
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# 2. Redis Counter
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis-counter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/KoJotPG/raspberry-pi-gitops.git'
+    targetRevision: HEAD
+    path: apps/redis-counter/k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: redis-counter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# 3. System Monitor
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: system-monitor
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/KoJotPG/raspberry-pi-gitops.git'
+    targetRevision: HEAD
+    path: apps/system-monitor/k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: system-monitor
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# 4. Weather Station
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: weather-station
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/KoJotPG/raspberry-pi-gitops.git'
+    targetRevision: HEAD
+    path: apps/weather-station/k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: weather-station
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# 5. Infrastructure / Traefik Config
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/KoJotPG/raspberry-pi-gitops.git'
+    targetRevision: HEAD
+    path: infrastructure/traefik-config
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
